@@ -71,18 +71,18 @@ zsh: segmentation fault  ./vuln
 ```
 We witness a segmentation fault when we insert 70 bytes of 'A' char.
 We can continue, by investigating our binary using GDB.
-![[Pasted image 20240726003508.png]]
+![](img/Pasted%20image%2020240726003508.png)
 This is the assembly code of main(), here we see our call to vuln() is located at 0x401333 (32 bit) and the following instruction is located at 0x401338, this will be the return address when the stack frame for function call vuln() is created.
-![[Pasted image 20240726004137.png]]
+![](img/Pasted%20image%2020240726004137.png)
 Here I set a breakpoint at when the vuln() function is called and second breakpoint after the gets() command in the vuln() function. Our purpose here is to first find the address of our buffer and the return address.
 When running the debugger, we see that the first breakpoint is met, here information such as the location of the RSP register can be outline (0x7fffffffdd10), I also get the address of the flag() function as well (0x401236). 
-![[Pasted image 20240726005009.png]]
+![](img/Pasted%20image%2020240726005009.png)
 Continuing the program, I input "AAAA" and the second breakpoint is reached, if we looked closely at the assembly code for function vuln(). We can see that `<vuln+12>` instruction `lea rax, rbp-0x40` this is allocating memory addresses for our variable, in this function the only variable is our buffer (so the address that RAX is storing must be the address to our input buffer). See image below.
-![[Pasted image 20240726005534.png]]
+![](img/Pasted%20image%2020240726005534.png)
 Here we see that $rax contains the hex representation of "AAAA" which is 0x41414141, we also found here an interesting address 0x00401338 (which is the address to the next instruction in main) so this is the return address.
 From here we can find our offset: 0x7fffffffdd08 - 0x7fffffffdcc0 = 0x48 (72) so the distance from the buffer to the return address is 72 bytes.
 We can try to overflow, flood the register with 72 bytes 'A' and 4 bytes 'B'.
-![[Pasted image 20240726010907.png]]
+![](img/Pasted%20image%2020240726010907.png)
 Here we can see that our stack has been overflowed and we have overflowed into the return_address, we can see that continuing the program register RIP is pointed to 0x42424242 ("BBBB"), now that we have located where the return address is we can attempt to point to 0x401236 which is where the flag() function is. Doing this will call the flag function which will give us the flag.
 ```python
 import pwn
@@ -130,4 +130,4 @@ p.sendline(payload)
 p.interactive()
 ```
 The following exploit code is written, executing it will give us the flag.
-![[Pasted image 20240726011347.png]]
+![](img/Pasted%20image%2020240726011347.png)
