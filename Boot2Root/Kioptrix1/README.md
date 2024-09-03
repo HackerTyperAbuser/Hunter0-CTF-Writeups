@@ -12,7 +12,8 @@ Author Nguyen Nghia Hiep
 ## Table of Contents
 ---
 ## Introduction 
-text text text 
+Kioptrix Level 1: https://www.vulnhub.com/entry/kioptrix-level-1-1,22/
+Kioptrix Level 1 is an interesting and straight forward machine that goes back to the basic, with a good methodology this box can easily be tackled.
 ### Improved Skills:
 - Vulnerability Scanning
 - Enumeration
@@ -99,6 +100,9 @@ Pwned the Kioptrix Level 1 system and reading the hidden mail.
 
 ---
 ## Findings
-- Findings 1
-- Findings 2
+- The default RedHat 'It Works!' page (misconfiguration)
+- Version of Apache, OpenSSH and Samba is revealed.
+- Vulnerable to CVE-2002-0082, CVE-2002-0083, CVE-2003-0201
 ## Lesson Learnt
+### Explore all the vulnerabilities
+This box improves my overall methodology, a machine can have more than one vulnerability and this was something I ignored. When discovered the Apache vulnerability I instantly attempted to exploit it and ignored a serious Samba vulnerability which would give privileged access. Furthermore, I didn't research the vulnerability properly, leading to the Apache exploit not giving root user. Kioptrix Level 1 was simple and improved my enumeration and vulnerability scanning methodology.
