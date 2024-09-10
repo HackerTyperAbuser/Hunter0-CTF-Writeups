@@ -1,2 +1,2 @@
-*.md  export-ignore
-*.md  linguist-generated
+**/*.md  export-ignore
+**/*.md  linguist-generated
