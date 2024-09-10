@@ -17,59 +17,123 @@ Kioptrix Level 1.1 is an interesting and straight forward machine, with a good m
 ---
 ## Enumeration
 Nmap scan results
-![[Pasted image 20240909232823.png]]
-![[Pasted image 20240909232844.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909232823.png">
+</div>
+
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909232844.png">
+</div>
+
 ### Port 22 - SSH
 Discover that OpenSSH 3.9p1 which is not vulnerable to anything.
 ### Port 80/443 - HTTP/S
 Discover Apache  httpd 2.0.52  (CentOS)
-![[Pasted image 20240909233019.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909233019.png">
+</div>
+
 The webpage contains a login, some simple credentials were test, however, didn't return much result. No hidden directories were found.
 Knowing that the webpage utilizes a MySQL database, some SQLi was tested.
-![[Pasted image 20240909234627.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909234627.png">
+</div>
+
 SQLi is detected using SQLMap and allowed bypass of authentication. The webpage allows user to ping to a particular host.
-![[Pasted image 20240909233851.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909233851.png">
+</div>
+
 Results is returned in pingit.php
-![[Pasted image 20240909234010.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909234010.png">
+</div>
+
 ### Port 111 - RPC
 Did reveal other program, running on the target, reveals some UDP open ports. Particularly the program at TCP 864 is also ran on 860 UDP.
 ### Port 643 - IPP CUPS 1.1
 Didn't reveal much information, connection refused.
 ### Port 3306 - MySQL
 Had some access control, connection was refused, so not much can be extracted besides that the database is MySQL.
-![[Pasted image 20240909233735.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909233735.png">
+</div>
+
 
 ---
 ## Exploitation 
 ### Command Injection
 Earlier we discovered that the web page contains a pinging functionality, the result returned in pingit.php seems as if a ping command is being run on the backend of the web page then rendered back.
 Test for command injection with some simple payloads. We were able to add flags of the Ping commands and execute it.
-![[Pasted image 20240909235020.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240909235020.png">
+</div>
+
 Commands can be executed. Payload = ;whoami;
-![[Pasted image 20240910000520.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910000520.png">
+</div>
+
 With this we can attempt to run a reverse shell and gain foothold to this system.
-![[Pasted image 20240910000641.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910000641.png">
+</div>
+
 We can see that indeed the pingit.php file was executing the `ping` command
-![[Pasted image 20240910000935.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910000935.png">
+</div>
+
 
 ---
 ## Post Exploitation
 ### Enumeration
 The web page must connect to the MySQL database to process the authentication, the index.php file was checked. 
-![[Pasted image 20240910004812.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910004812.png">
+</div>
+
 Here we found the credentials john:hiroshima which was used to log into the local MySQL server because we weren't able to connect to it from our attack machine.
-![[Pasted image 20240910005850.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910005850.png">
+</div>
+
 The password are not hashed but are in cleartext, using these credentials we can log into the web page.
 ### Privilege Escalation: Kernel Exploits
 The credential weren't useful to us since we can't use Sudo, SSH or change users. Using LinEnum, we discovered that the Kernel version for this system is relatively old, 2.6.9-55.EL CentOS release 4.5 (final). Beside this there was an interesting binary `gcc`
-![[Pasted image 20240910001305.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910001305.png">
+</div>
+
 This version of the kernel is vulnerable to CVE-2009-2698, local privilege escalation exploit.
-![[Pasted image 20240910001402.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910001402.png">
+</div>
+
 This exploit was uploaded, compiled on the target machine and executed
 ```bash
 gcc exploit.c -o cve-2009-2698 && ./cve-2009-2698
 ```
-![[Pasted image 20240910001713.png]]
+
+<div align="center">
+	<img src="img/Pasted%20image%2020240910001713.png">
+</div>
+
 We have successfully escalated our privileges and pwned this machine.
 
 ---
