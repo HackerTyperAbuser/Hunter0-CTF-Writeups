@@ -36,6 +36,7 @@ Beside this anonymous authentication was not allowed and we cannot connect to SM
 ### Port 9255/9256 - AChat
 Port 9255 reveals HTTP, however, there were no web page when visiting address on the browser, but we can curl the address.
 ![](img/Pasted%20image%2020241015163629.png)
+
 Port 9256, displays AChat service, there were no more information from this.
 - AChat server
 ---
