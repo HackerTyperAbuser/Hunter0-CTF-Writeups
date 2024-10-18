@@ -11,7 +11,7 @@ Author: Nguyen Nghia Hiep
 ```
 ![](img/Pasted%20image%2020241017221434.png)
 ## Introduction 
-Arctic is an easy machine that has a vulnerable version of Adobe ColdFusion and a straight forward privilege escalation vector. However, it really shines as a machine for testing various different tools and methodology.
+Arctic is an easy machine that has a vulnerable version of Adobe ColdFusion and a straight-forward privilege escalation vector. However, it really shines as a machine for testing different tools and methodologies.
 ### Improved Skills:
 - Windows Kernel Privilege Escalation
 - Vulnerability scanning and fixing exploit code
@@ -28,6 +28,7 @@ Nmap scan results, novice port 8500 was discovered on the target.
 ### Port 8500 
 Checking this port on the browser, a website containing various contents is revealed. 
 ![](img/Pasted%20image%2020241017205911.png)
+
 CFIDE and cfdocs directories was interesting, a quick Google search revealed the target infrastructure.
 - Adobe ColdFusion 
 There also an administrator panel (/CFIDE/administrator)
@@ -43,14 +44,15 @@ Adobe ColdFusion 8 Administrator seems to have some serious vulnerabilities.
 ## Exploitation 
 ### Path Traversal 
 There is a path traversal vulnerability that allows retrieval of admin user hash.
-![](../../../Pasted%20image%2020241018122924.png)
-![](../../../Pasted%20image%2020241018123000.png)
+![](img/Pasted%20image%2020241018122924.png)
+![](img/Pasted%20image%2020241018123000.png)
 Obtained credential:
 - admin:happyday
 ### File Upload -> RCE
 Using the publicly available File Upload -> RCE exploit code. This is an unauthenticated file upload vulnerability that allows for remote code execution.
 ![](img/Pasted%20image%2020241017221352.png)
 ![](img/Pasted%20image%2020241017221030.png)
+
 We have gained foothold onto the system.
 
 ---
@@ -75,13 +77,14 @@ For some reason, I can't seem to get the exploit working in Metasploit trying to
 ![](img/Pasted%20image%2020241018121614.png)
 ![](img/Pasted%20image%2020241018121648.png)
 Starting a listener and obtain meterpreter shell. 
-![](../../../Pasted%20image%2020241018121830.png)
+![](img/Pasted%20image%2020241018121830.png)
 NOTE: You should always migrate to x64 processes for more stable shell.
-![](../../../Pasted%20image%2020241018122534.png)
+![](img/Pasted%20image%2020241018122534.png)
+
 After getting the session, find kernel exploit /post/multi/recon/local_exploit_suggester
-![](../../../Pasted%20image%2020241018122117.png)
+![](img/Pasted%20image%2020241018122117.png)
 Privilege escalation with Metasploit module
-![](../../../Pasted%20image%2020241018122643.png)
+![](img/Pasted%20image%2020241018122643.png)
 
 ---
 ## Trophy and Loot
