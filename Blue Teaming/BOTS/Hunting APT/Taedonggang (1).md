@@ -1,8 +1,10 @@
 # Hunting an APT with Splunk: Initial Access
 
 ![](img/Pasted%20image%2020241020123936.png)
-Scenario: Frothly a brewing beverage company has just been attacked and it is our job to investigate the incident and hunt threats. Incident occurred in August 2017.
-Environment:
+## Scenario
+Frothly a brewing beverage company has just been attacked and it is our job to investigate the incident and hunt threats. Incident occurred in August 2017.
+
+### Environment:
 ![](img/Pasted%20image%2020241020124635.png)
 ## T1566.001 Phishing: Spearphishing Attachment
 Source: https://attack.mitre.org/techniques/T1566/001/
