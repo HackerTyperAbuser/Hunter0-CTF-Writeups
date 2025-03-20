@@ -99,6 +99,7 @@ Uploading the service to the victim, we can use `systemctl`:
 From Jarvis I was able to review on my Web Application testing methodology and Privilege Escalation. I could've finish this box at a much faster time as I know the vulnerability but my exploits were not working, especially for the `systemctl` SUID exploit. Moving on I hope to review the CVE-2018-12613. Credits to **0xdf** [1] for his writeup allowing to attempt the manual exploitation.
 ## References
 [1] 0xdf. "HTB: Jarvis" (accessed 21th March 2025). 0xdf hacks stuff. [Online]. Available: https://0xdf.gitlab.io/2019/11/09/htb-jarvis.html#path-1-phpmyadmin
+
 [2] IppSec. "HackTheBox - Jarvis" (accessed 21th March 2025). YouTube. [Online]. Available: https://www.youtube.com/watch?v=YHHWvXBfwQ8
 
 #linux #path-traversal #boot2root #sudo #SUID #SQLi
