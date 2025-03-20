@@ -77,6 +77,7 @@ To evade the blacklist, we can create a reverse shell bash script then execute i
 ### Privilege Escalation: SUID -> ROOT
 From the LinPEAS result earlier, we were able to found a SUID `systemctl` for pepper account. With this we can create a malicious service:
 ![](img/Pasted%20image%2020250320154809.png)
+
 Uploading the service to the victim, we can use `systemctl`:
 ![](img/Pasted%20image%2020250320155133.png)
 
